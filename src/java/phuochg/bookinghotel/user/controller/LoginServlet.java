@@ -25,7 +25,7 @@ import phuochg.bookinghotel.account.AccountDTO;
 public class LoginServlet extends HttpServlet {
 
     private static final String LOGIN_PAGE = "login.jsp";
-    private static final String HOME_PAGE_USER = "homeForUser.jsp";
+    private static final String HOME_PAGE_USER = "MainController?btnAction=";
     private static final String HOME_PAGE_ADMIN = "homeForAdmin.jsp";
 
     /**

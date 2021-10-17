@@ -38,10 +38,12 @@ public class LoadHotelUserServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             HotelDAO hotelDAO = new HotelDAO();
-
+            
+            
             List<HotelDTO> listHotel = hotelDAO.loadListHotel();
             request.setAttribute("LIST_HOTEL", listHotel);
 
+            
         } catch (Exception e) {
             log("Error AT LOADSERVLET:" + e.toString());
         } finally {

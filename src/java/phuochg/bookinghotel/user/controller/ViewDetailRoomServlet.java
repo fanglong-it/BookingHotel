@@ -12,8 +12,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import phuochg.bookinghotel.account.AccountDTO;
+import phuochg.bookinghotel.feedback.FeedBackDAO;
+import phuochg.bookinghotel.feedback.FeedBackDTO;
 import phuochg.bookinghotel.room.RoomDAO;
 import phuochg.bookinghotel.room.RoomDTO;
+import phuochg.bookinghotel.validation.FeedBackUtils;
 
 /**
  *
@@ -22,7 +27,8 @@ import phuochg.bookinghotel.room.RoomDTO;
 @WebServlet(name = "ViewDetailRoomServlet", urlPatterns = {"/ViewDetailRoomServlet"})
 public class ViewDetailRoomServlet extends HttpServlet {
 
-    private static final String ROOM_PAGE_USER = "roomForUser.jsp";
+    private static final String DETAIL_ROOM_PAGE = "detailRoom.jsp";
+    private static final String LOGIN_PAGE = "login.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,14 +42,38 @@ public class ViewDetailRoomServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ROOM_PAGE_USER;
+        String url = DETAIL_ROOM_PAGE;
         try {
-            
-            int hotelId = Integer.parseInt(request.getParameter("hotelId"));
-            RoomDAO roomDAO = new RoomDAO();
-            List<RoomDTO> listRoom = roomDAO.searchListHotel(hotelId);
-            request.setAttribute("LIST_ROOM", listRoom);
 
+            int hotelId = Integer.parseInt(request.getParameter("hotelId"));
+            int roomNo = Integer.parseInt(request.getParameter("roomNo"));
+
+            HttpSession session = request.getSession();
+            AccountDTO acc = (AccountDTO) session.getAttribute("ACC");
+            String msg = "";
+            if (acc == null) {
+                url = LOGIN_PAGE;
+                msg = "You Need to Login To process this request!";
+            } else {
+                RoomDAO roomDAO = new RoomDAO();
+                RoomDTO roomDTO = roomDAO.getRoomInfor(hotelId, roomNo);
+                request.setAttribute("ROOM_DETAIL", roomDTO);
+            }
+
+            //Get Feedback Value
+            FeedBackDAO feedBackDAO = new FeedBackDAO();
+            List<FeedBackDTO> listFeedBackDTOs = feedBackDAO.getListFeedBack(roomNo);
+            if (listFeedBackDTOs.size() == 0) {
+                msg = "Nothing Feedback Yet!";
+
+            } else {
+                FeedBackUtils feedBackUtils = new FeedBackUtils();
+                int startValue = feedBackUtils.caculatorStarValue(listFeedBackDTOs);
+                request.setAttribute("START_VALUE", startValue);
+                msg = "Here Your value!";
+            }
+            request.setAttribute("START_MSG", msg);
+            request.setAttribute("VIEWDETAIL_MSG", msg);
         } catch (Exception e) {
             log("Error at ViewDetailRoomServlet:" + e.toString());
         } finally {

@@ -64,7 +64,11 @@ public class SearchHotelServlet extends HttpServlet {
                 }
             }
             if (listHotel != null) {
-                request.setAttribute("LIST_HOTEL", listHotel);
+                
+                
+                
+                
+                request.setAttribute("LIST_ROOM", listHotel);
             }
 
             request.setAttribute("SEARCH_MSG", msg);

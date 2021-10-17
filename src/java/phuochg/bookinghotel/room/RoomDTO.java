@@ -17,12 +17,17 @@ public class RoomDTO implements Serializable {
 //Where hotelId = 0
 
     private int hotelId;
+    private String hotelName;
     private int roomNo;
     private String roomName;
     private String availableDate;
     private int quantity;
     private String typeId;
     private float price;
+    private int night;
+    private String checkInDate;
+    private String checkOutDate;
+    private float total;
 
     public RoomDTO(int hotelId, int roomNo, String roomName, String availableDate, int quantity, String typeId, float price) {
         this.hotelId = hotelId;
@@ -32,6 +37,72 @@ public class RoomDTO implements Serializable {
         this.quantity = quantity;
         this.typeId = typeId;
         this.price = price;
+    }
+
+    public RoomDTO(int hotelId, String hotelName, int roomNo, String roomName, String typeId, float price, int night) {
+        this.hotelId = hotelId;
+        this.hotelName = hotelName;
+        this.roomNo = roomNo;
+        this.roomName = roomName;
+        this.typeId = typeId;
+        this.price = price;
+        this.night = night;
+    }
+
+    public RoomDTO(int hotelId, String hotelName, int roomNo, String roomName,
+            String availableDate, int quantity, String typeId, float price, int night, String checkInDate, String checkOutDate, float total) {
+        this.hotelId = hotelId;
+        this.hotelName = hotelName;
+        this.roomNo = roomNo;
+        this.roomName = roomName;
+        this.availableDate = availableDate;
+        this.quantity = quantity;
+        this.typeId = typeId;
+        this.price = price;
+        this.night = night;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+        this.total = total;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public String getHotelName() {
+        return hotelName;
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
+    }
+
+    public int getNight() {
+        return night;
+    }
+
+    public void setNight(int night) {
+        this.night = night;
+    }
+
+    public String getCheckInDate() {
+        return checkInDate;
+    }
+
+    public void setCheckInDate(String checkInDate) {
+        this.checkInDate = checkInDate;
+    }
+
+    public String getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public void setCheckOutDate(String checkOutDate) {
+        this.checkOutDate = checkOutDate;
     }
 
     public int getHotelId() {

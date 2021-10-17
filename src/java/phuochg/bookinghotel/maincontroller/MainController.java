@@ -21,16 +21,33 @@ public class MainController extends HttpServlet {
 
     private static final String HOME_PAGE_USER = "homeForUser.jsp";
     private static final String LOGIN_PAGE_USER = "login.html";
-    private static final String LOAD_HOTEL_SERVLET = "LoadHotelUserServlet";
+    private static final String LOAD_ROOM_SERVLET = "LoadRoomServlet";
     private static final String LOGIN_SERVLET = "LoginServlet";
 
     private static final String LOGOUT_SERVLET = "LogoutServlet";
 
     private static final String REGISTER_PAGE = "registerPage.html";
     private static final String REGISTER_SERVLET = "RegisterServlet";
-    private static final String SEARCH_HOTEL_SERVLET = "SearchHotelServlet";
+    private static final String SEARCH_ROOM_SERVLET = "SearchRoomServlet";
+
+    private static final String VIEW_LIST_ROOM_SERVLET = "ViewListRoomServlet";
 
     private static final String VIEW_DETAIL_ROOM_SERVLET = "ViewDetailRoomServlet";
+
+    private static final String ORDER_ROOM_SERVLET = "OrderRoomServlet";
+
+    private static final String VIEW_CART_SERVLET = "ViewCartServlet";
+
+    private static final String DELETE_CART_SERVLET = "DeleteCartServlet";
+
+    private static final String UPDATE_CART_SERVLET = "UpdateCartServlet";
+
+    private static final String CHECK_OUT_SERVLET = "CheckOutServlet";
+    private static final String VIEW_ORDER_SERVLET = "ViewOrderServlet";
+    private static final String VIEW_ORDERDETAILS_SERVLET = "ViewOrderDetailsServlet";
+    private static final String DELETE_ORDER_SERVLET = "DeleteOrderServlet";
+    private static final String FEEDBACK_PAGE = "FeedBackPageServlet";
+    private static final String FEEDBACK_SERVLET = "FeedBackServlet";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -39,9 +56,9 @@ public class MainController extends HttpServlet {
         try {
             String action = request.getParameter("btnAction");
             if (action == null) {
-                url = LOAD_HOTEL_SERVLET;
+                url = LOAD_ROOM_SERVLET;
             } else if (action.equals("")) {
-                url = LOAD_HOTEL_SERVLET;
+                url = LOAD_ROOM_SERVLET;
             } else if (action.equals("loginPage")) {
                 url = LOGIN_PAGE_USER;
             } else if (action.equals("loginServlet")) {
@@ -52,10 +69,33 @@ public class MainController extends HttpServlet {
                 url = REGISTER_PAGE;
             } else if (action.equals("CreateServlet")) {
                 url = REGISTER_SERVLET;
-            } else if (action.equals("SearchHotel")) {
-                url = SEARCH_HOTEL_SERVLET;
+            } else if (action.equals("SearchRoom")) {
+                url = SEARCH_ROOM_SERVLET;
+            } else if (action.equals("viewListRoom")) {
+                url = VIEW_LIST_ROOM_SERVLET;
             } else if (action.equals("viewDetailRoom")) {
                 url = VIEW_DETAIL_ROOM_SERVLET;
+            } else if (action.equals("Order Now")) {
+                url = ORDER_ROOM_SERVLET;
+            } else if (action.equals("ViewCart")) {
+                url = VIEW_CART_SERVLET;
+            } else if (action.equals("deleteCart")) {
+                url = DELETE_CART_SERVLET;
+            } else if (action.equals("updateCart")) {
+                url = UPDATE_CART_SERVLET;
+            } else if (action.equals("checkOut")) {
+                url = CHECK_OUT_SERVLET;
+            } else if (action.equals("ViewOrder")) {
+                url = VIEW_ORDER_SERVLET;
+            } else if (action.equals("viewOrderDetails")) {
+                url = VIEW_ORDERDETAILS_SERVLET;
+
+            } else if (action.equals("deleteOrder")) {
+                url = DELETE_ORDER_SERVLET;
+            } else if (action.equals("feedBackPage")) {
+                url = FEEDBACK_PAGE;
+            } else if (action.equals("FeedBackServlet")) {
+                url = FEEDBACK_SERVLET;
             }
 
         } catch (Exception e) {

@@ -35,6 +35,25 @@
                 <c:if test="${not empty requestScope.CREATE_MSG}">
                     <p style="color: red">${requestScope.CREATE_MSG}</p>
                 </c:if>
+                <c:if test="${not empty requestScope.VIEWDETAIL_MSG}">
+                    <p style="color: red">${requestScope.VIEWDETAIL_MSG}</p>
+                </c:if>
+                <c:if test="${not empty requestScope.CART_MSG}">
+                    <p style="color: red">${requestScope.CART_MSG}</p>
+                </c:if>
+                <c:if test="${not empty requestScope.VIEWORDER_MSG}">
+                    <p style="color: red">${requestScope.VIEWORDER_MSG}</p>
+                </c:if>
+                <c:if test="${not empty requestScope.ORDERDETAILS_MSG}">
+                    <p style="color: red">${requestScope.ORDERDETAILS_MSG}</p>
+                </c:if>
+                <c:if test="${not empty requestScope.FEEDBACK_MSG}">
+                    <p style="color: red">${requestScope.FEEDBACK_MSG}</p>
+                </c:if>
+
+
+
+
 
                 <br>
                 <button type="submit" name ="btnAction" value="loginServlet" class="btn btn-primary">Submit</button>

@@ -29,9 +29,9 @@ public class HotelDAO implements Serializable {
         try {
             con = DBHelper.makeConnect();
             if (con != null) {
-                String sql = "Select tblHotel.hotelId, tblHotel.hotelName, tblHotel.hotelAddress, tblHotel.Status\n"
-                        + "from tblHotel	\n"
-                        + "inner join tblRoom on tblHotel.hotelId = tblRoom.hotelId\n"
+                String sql = "Select tblHotel.hotelId, tblHotel.hotelName, roomNo, roomName, quantity ,typeId, roomPrice\n"
+                        + "from tblRoom	\n"
+                        + "inner join tblHotel on tblHotel.hotelId = tblRoom.hotelId\n"
                         + "where tblHotel.hotelName like ? \n"
                         + "and tblRoom.typeId like ? \n"
                         + "and tblRoom.availableDate between ? and ? ";
@@ -47,7 +47,6 @@ public class HotelDAO implements Serializable {
                     String hotelName = rs.getString("hotelName");
                     String hotelAddress = rs.getString("hotelAddress");
                     boolean status = rs.getBoolean("status");
-
                     HotelDTO hotel = new HotelDTO(hotelId, hotelName, hotelAddress, status);
                     listHotel.add(hotel);
                 }
@@ -77,20 +76,23 @@ public class HotelDAO implements Serializable {
         try {
             con = DBHelper.makeConnect();
             if (con != null) {
-                String sql = "Select tblHotel.hotelId, tblHotel.hotelName, tblHotel.hotelAddress, tblHotel.Status\n"
-                        + "from tblHotel	\n"
+                String sql = "select tblHotel.hotelId, tblHotel.hotelName, roomNo, roomName, quantity ,typeId, roomPrice\n"
+                        + "from tblRoom\n"
+                        + "inner join tblHotel on tblRoom.hotelId = tblHotel.hotelId\n"
                         + "where tblHotel.hotelName like ? ";
                 pst = con.prepareStatement(sql);
                 pst.setString(1, "%" + searchValue + "%");
 
                 rs = pst.executeQuery();
                 while (rs.next()) {
+
                     int hotelId = rs.getInt("hotelId");
                     String hotelName = rs.getString("hotelName");
                     String hotelAddress = rs.getString("hotelAddress");
                     boolean status = rs.getBoolean("status");
 
                     HotelDTO hotel = new HotelDTO(hotelId, hotelName, hotelAddress, status);
+
                     listHotel.add(hotel);
                 }
 

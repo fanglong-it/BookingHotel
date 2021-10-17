@@ -1,6 +1,6 @@
 <%-- 
-    Document   : roomForUser
-    Created on : Oct 15, 2021, 4:18:12 PM
+    Document   : viewOrder
+    Created on : Oct 17, 2021, 9:26:40 PM
     Author     : Fanglong-it
 --%>
 
@@ -10,26 +10,30 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>View Order</title>
         <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
     </head>
     <body>
-        <h1>HomeForUser</h1>
         <!-- Header -->
         <div id="header">
             <div class="shell">
                 <!-- Logo + Top Nav -->
                 <div id="top">
-                    <h1><a href="#">SpringTime</a></h1>
+                    <h1><a href="#">Order</a></h1>
                     <div id="top-navigation">
 
                         <c:if test="${sessionScope.ACC != null}">
+                            <c:if test="${sessionScope.ACC.roleId eq '1'}">
+                                <c:redirect url="login.html"></c:redirect>
+                            </c:if>
+                            <c:if test="${sessionScope.ACC.roleId ne '1'}">
+                                Welcome, ${sessionScope.ACC.userId}
+                                <a href="MainController?btnAction=logout">Log out</a>
+                            </c:if>
                             <span>|</span>
-                            Welcome, ${sessionScope.ACC.userId}
-                            <a href="MainController?btnAction=logout">Log out</a>
-                        </c:if>
 
+                        </c:if>
                         <c:if test="${sessionScope.ACC == null}">
                             <span>|</span>
                             <a href="MainController?btnAction=loginPage">Log In</a>
@@ -44,12 +48,9 @@
                 <!-- Main Nav -->
                 <div id="navigation">
                     <ul>
-                        <li><a href="MainController?btnAction=" ><span>Dashboard</span></a></li>
-                        <li><a href="#" class="active"><span>Room</span></a></li>
-                        <li><a href="#"><span>User Management</span></a></li>
-                        <li><a href="#"><span>Photo Gallery</span></a></li>
-                        <li><a href="#"><span>Products</span></a></li>
-                        <li><a href="#"><span>Services Control</span></a></li>
+                        <li><a href="MainController?btnAction=" ><span>Home Page</span></a></li>
+                        <li><a href="MainController?btnAction=ViewCart"><span>View Cart</span></a></li>
+                        <li><a href="MainController?btnAction=ViewOrder"class="active" ><span>View Order</span></a></li>
                     </ul>
                 </div>
                 <!-- End Main Nav -->
@@ -70,43 +71,50 @@
                 <div id="main">
                     <div class="cl">&nbsp;</div>
                     <!-- Content -->
-                    <div id="content" style="width: 100%">
+                    <div id="content">
                         <!-- Box -->
                         <div class="box">
                             <!-- Box Head -->
                             <div class="box-head">
-                                <h2 class="left">Current Articles</h2>
-                                <div class="right">
-
-                                </div>
-
+                                <h2 class="left">Current Cart</h2>
+                                <p class="right">${requestScope.VIEWORDER_MSG}</p>
 
                             </div>
                             <!-- End Box Head -->
                             <!-- Table -->
                             <div class="table">
-                                <c:if test="${requestScope.LIST_ROOM != null}">
+                                <c:if test="${requestScope.LIST_ORDER != null}">
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
                                             <th>No.</th>
-                                            <th>RoomNo</th>
-                                            <th>RoomName</th>
-                                            <th>Quantity</th>
-                                            <th>Type</th>
-                                            <th>Price</th>
-                                            <th width="110" class="ac">Content Control</th>
+                                            <th>Order Id</th>
+                                            <th>UserId</th>
+
+                                            <th>Order Date</th>
+                                            <th>Total</th>
+                                            <th>Status</th>
+                                            <th width="110" class="ac">Action</th>
                                         </tr>
 
-                                        <c:forEach var="r" items="${requestScope.LIST_ROOM}" varStatus="count">
-                                            <tr>
-                                                <td>${count.count}</td>
-                                                <td><h3><a href="#">${r.roomNo}</a></h3></td>
-                                                <td>${r.roomName}</td>
-                                                <td>${r.quantity}</td>
-                                                <td>${r.typeId}</td> 
-                                                <td>${r.price}</td>
-                                                <td><a href="MainController?btnAction=viewDetailRoom&hotelId=${r.roomNo}" class="ico edit">Order</a></td>
-                                            </tr>
+                                        <c:forEach var="o" items="${requestScope.LIST_ORDER}" varStatus="count">
+                                            <form action="MainController">
+                                                <tr>
+                                                    <td>${count.count}</td>
+                                                    <td><h3><a href="#">${o.orderId}</a></h3></td>
+                                                    <td>${o.userId}</td>
+
+                                                    <td>${o.orderDate}</td> 
+                                                    <td>${o.total} .vnđ</td>
+                                                    <td>${o.status}</td>
+
+                                                    <td>
+                                                        <a href="MainController?btnAction=viewOrderDetails&orderId=${o.orderId}" class="ico edit">Details</a>
+                                                        <a href="MainController?btnAction=deleteOrder&orderId=${o.orderId}" class="ico del">Delete</a>
+
+                                                    </td>
+
+                                                </tr>
+                                            </form>
                                         </c:forEach>
 
 
@@ -125,6 +133,8 @@
                     </div>
                     <!-- End Content -->
                     <!-- Sidebar -->
+
+
 
                     <!-- End Sidebar -->
                     <div class="cl">&nbsp;</div>
