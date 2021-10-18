@@ -164,7 +164,7 @@ public class RoomDAO implements Serializable {
                 String sql = "select tblHotel.hotelId, tblHotel.hotelName, roomNo, roomName, quantity ,typeId, roomPrice\n"
                         + "from tblRoom\n"
                         + "inner join tblHotel on tblRoom.hotelId = tblHotel.hotelId\n"
-                        + "where tblHotel.hotelName like ? ";
+                        + "where tblHotel.hotelName like ? and tblRoom.quantity > 0";
                 pst = con.prepareStatement(sql);
                 pst.setString(1, "%" + searchValue + "%");
 
@@ -213,7 +213,7 @@ public class RoomDAO implements Serializable {
                         + "inner join tblHotel on tblHotel.hotelId = tblRoom.hotelId\n"
                         + "where tblHotel.hotelName like ? \n"
                         + "and tblRoom.typeId like ? \n"
-                        + "and tblRoom.availableDate between ? and ? ";
+                        + "and tblRoom.availableDate between ? and ? and tblRoom.quantity > 0";
                 pst = con.prepareStatement(sql);
                 pst.setString(1, "%" + searchValue + "%");
                 pst.setString(2, typeRoom);
@@ -262,7 +262,7 @@ public class RoomDAO implements Serializable {
                 String sql = "select tblHotel.hotelId, tblHotel.hotelName, roomNo, roomName, quantity ,typeId, roomPrice\n"
                         + "from tblRoom\n"
                         + "inner join tblHotel on tblRoom.hotelId = tblHotel.hotelId\n"
-                        + "where tblRoom.typeId like ? ";
+                        + "where tblRoom.typeId like ? and tblRoom.quantity > 0";
                 pst = con.prepareStatement(sql);
                 pst.setString(1, "%" + searchValue + "%");
 

@@ -49,39 +49,57 @@ public class CheckOutServlet extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             List<RoomDTO> listRoom = (List<RoomDTO>) session.getAttribute("LIST_CART");
-            Float total = (Float) session.getAttribute("TOTAL");
-            AccountDTO acc = (AccountDTO) session.getAttribute("ACC");
             RoomDAO roomDAO = new RoomDAO();
+            OrderUtils orderUtils = new OrderUtils();
+
+            List<RoomDTO> listDB = roomDAO.getListRoom();
+
+            boolean check = false;
             String msg = "";
-            if (listRoom.size() == 0) {
-                msg = "Nothing To CheckOut!";
-                session.setAttribute("LIST_CART", null);
-                session.setAttribute("TOTAL", null);
-            } else {
-                OrderUtils orderUtils = new OrderUtils();
-                String orderCode = orderUtils.getAlphaNumericString(10);
-                OrderDAO orderDAO = new OrderDAO();
-                OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
-                //get To day
-                Long milis = System.currentTimeMillis();
-                Date today = new Date(milis);
-                //Order
-                OrderDTO order = new OrderDTO(orderCode, acc.getUserId(), today.toString(), total, true);
-                orderDAO.insertOrder(order);
-                for (int i = 0; i < listRoom.size(); i++) {
 
-                    //orderId, roomNo, hotelId, orderQuantity, night, checkIn, checkOut
-                    OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(orderCode, listRoom.get(i).getRoomNo(),
-                            listRoom.get(i).getHotelId(), 1, listRoom.get(i).getNight(),
-                            listRoom.get(i).getCheckInDate(), listRoom.get(i).getCheckOutDate());
-
-                    int newQuantity = listRoom.get(i).getQuantity();
-                    int oldQuantity = roomDAO.getRoomQuantity(listRoom.get(i).getRoomNo());
-                    int totalQuantity = oldQuantity - newQuantity;
-                    roomDAO.setRoomQuantity(listRoom.get(i).getRoomNo(), totalQuantity);
-                    orderDetailsDAO.insertOrderDetails(orderDetailsDTO);
+            for (int i = 0; i < listRoom.size(); i++) {
+                if (orderUtils.checkExistInDB(listDB, listRoom.get(i).getRoomNo())) {
+                    check = true;
                 }
-                msg = "order success!";
+            }
+
+            if (check) {
+
+                Float total = (Float) session.getAttribute("TOTAL");
+                AccountDTO acc = (AccountDTO) session.getAttribute("ACC");
+                if (listRoom.size() == 0) {
+                    msg = "Nothing To CheckOut!";
+                    session.setAttribute("LIST_CART", null);
+                    session.setAttribute("TOTAL", null);
+                } else {
+                    String orderCode = orderUtils.getAlphaNumericString(10);
+                    OrderDAO orderDAO = new OrderDAO();
+                    OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
+                    //get To day
+                    Long milis = System.currentTimeMillis();
+                    Date today = new Date(milis);
+                    //Order
+                    OrderDTO order = new OrderDTO(orderCode, acc.getUserId(), today.toString(), total, true);
+                    orderDAO.insertOrder(order);
+                    for (int i = 0; i < listRoom.size(); i++) {
+
+                        //orderId, roomNo, hotelId, orderQuantity, night, checkIn, checkOut
+                        OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(orderCode, listRoom.get(i).getRoomNo(),
+                                listRoom.get(i).getHotelId(), 1, listRoom.get(i).getNight(),
+                                listRoom.get(i).getCheckInDate(), listRoom.get(i).getCheckOutDate());
+
+                        int newQuantity = listRoom.get(i).getQuantity();
+                        int oldQuantity = roomDAO.getRoomQuantity(listRoom.get(i).getRoomNo());
+                        int totalQuantity = oldQuantity - newQuantity;
+                        roomDAO.setRoomQuantity(listRoom.get(i).getRoomNo(), totalQuantity);
+                        orderDetailsDAO.insertOrderDetails(orderDetailsDTO);
+                    }
+                    msg = "order success!";
+                    session.setAttribute("TOTAL", null);
+                    session.setAttribute("LIST_CART", null);
+                }
+            } else {
+                msg = "Order fail, Something not right!";
                 session.setAttribute("TOTAL", null);
                 session.setAttribute("LIST_CART", null);
             }

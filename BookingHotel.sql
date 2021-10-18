@@ -80,9 +80,14 @@ CREATE table tblOrderDetails(
 
 CREATE table tblDiscount(
 	discountCode varchar(50) primary key,
-	hotelId int foreign key references tblHotel(hotelId),
-	discountValue int
-)
+	discountValue int,
+	existDate date
+) 
+
+
+
+
+
 
 
 

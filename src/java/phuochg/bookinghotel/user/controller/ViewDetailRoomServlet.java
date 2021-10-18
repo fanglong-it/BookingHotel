@@ -63,16 +63,16 @@ public class ViewDetailRoomServlet extends HttpServlet {
             //Get Feedback Value
             FeedBackDAO feedBackDAO = new FeedBackDAO();
             List<FeedBackDTO> listFeedBackDTOs = feedBackDAO.getListFeedBack(roomNo);
+            String feedMsg = "";
             if (listFeedBackDTOs.size() == 0) {
-                msg = "Nothing Feedback Yet!";
-
+                feedMsg = "Nothing Feedback Yet!";
             } else {
                 FeedBackUtils feedBackUtils = new FeedBackUtils();
                 int startValue = feedBackUtils.caculatorStarValue(listFeedBackDTOs);
                 request.setAttribute("START_VALUE", startValue);
-                msg = "Here Your value!";
+                feedMsg = "Here Your value!";
             }
-            request.setAttribute("START_MSG", msg);
+            request.setAttribute("START_MSG", feedMsg);
             request.setAttribute("VIEWDETAIL_MSG", msg);
         } catch (Exception e) {
             log("Error at ViewDetailRoomServlet:" + e.toString());

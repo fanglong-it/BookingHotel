@@ -79,6 +79,7 @@
                             <div class="box-head">
                                 <h2 class="left">Current Cart</h2>
                                 <p class="right">${requestScope.CART_MSG}</p>
+                                <p class="right">${requestScope.CHECKDISCOUNT_MSG}</p>
 
                             </div>
                             <!-- End Box Head -->
@@ -168,7 +169,18 @@
                                 <!-- End Sort -->
                                 <button name="btnAction" value="checkOut" class="btn btn-primary" style="width: 100%">Check Out</button>
                                 <hr>
-                                <button name="btnAction" value="checkOut" class="btn btn-primary" style="width: 100%">Check Mail</button>
+                                <p>
+                                    <c:if test="${requestScope.CHECKDISCOUNT_MSG != null}">
+                                    <p style="color: redF">${requestScope.CHECKDISCOUNT_MSG}</p>
+                                </c:if>
+                                </p>
+
+
+                                <p>
+                                    Discount :<input type="text" name="discountCode" value="" style="width: 50%" class="field small-field"/>
+                                    VNĐ
+                                </p>
+                                <button name="btnAction" value="checkDiscountCode" class="btn btn-primary" style="width: 100%">Check</button>
                             </form>
                         </div>
 
