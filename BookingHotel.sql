@@ -63,6 +63,7 @@ CREATE table tblOrder(
 	userId varchar(50) foreign key references tblAccount(userId),
 	orderDate date,
 	total float,
+	status bit
 )
 
 
