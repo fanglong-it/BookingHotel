@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import phuochg.bookinghotel.account.AccountDAO;
 import phuochg.bookinghotel.account.AccountDTO;
+import phuochg.bookinghotel.validation.encrypted;
 
 /**
  *
@@ -26,7 +27,7 @@ public class LoginServlet extends HttpServlet {
 
     private static final String LOGIN_PAGE = "login.jsp";
     private static final String HOME_PAGE_USER = "MainController?btnAction=";
-    private static final String HOME_PAGE_ADMIN = "homeForAdmin.jsp";
+    private static final String HOME_PAGE_ADMIN = "MainController?btnAction=homeForAdmin";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,7 +47,7 @@ public class LoginServlet extends HttpServlet {
             String password = request.getParameter("Password");
 
             AccountDAO accDao = new AccountDAO();
-            AccountDTO accDto = accDao.login(username, password);
+            AccountDTO accDto = accDao.login(username, encrypted.encryptedPassword(password));
             HttpSession session = request.getSession();
             String msg = "";
             if (accDto == null) {
@@ -59,7 +60,7 @@ public class LoginServlet extends HttpServlet {
                     url = HOME_PAGE_USER;
                 }
             }
-            
+
             request.setAttribute("LOGIN_MSG", msg);
 
         } catch (SQLException e) {

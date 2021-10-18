@@ -46,7 +46,6 @@ public class LoadRoomServlet extends HttpServlet {
             // get request of Cart - Compare with listROom (Check cart is Empty || not)
             // modify Search
             // booking
-            
 
             HttpSession session = request.getSession();
             List<RoomDTO> listCart = (List<RoomDTO>) session.getAttribute("LIST_CART");

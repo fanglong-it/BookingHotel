@@ -50,6 +50,10 @@
                 <c:if test="${not empty requestScope.FEEDBACK_MSG}">
                     <p style="color: red">${requestScope.FEEDBACK_MSG}</p>
                 </c:if>
+                <c:if test="${not empty requestScope.CHECKDISCOUNT_MSG}">
+                    <p style="color: red">${requestScope.CHECKDISCOUNT_MSG}</p>
+                </c:if>
+
 
 
 

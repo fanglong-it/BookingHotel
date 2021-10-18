@@ -23,7 +23,7 @@ public class MainController extends HttpServlet {
     private static final String LOGIN_PAGE_USER = "login.html";
     private static final String LOAD_ROOM_SERVLET = "LoadRoomServlet";
     private static final String LOGIN_SERVLET = "LoginServlet";
-
+    private static final String HOME_FOR_ADMIN_SERVLET = "LoadRoomAdminServlet";
     private static final String LOGOUT_SERVLET = "LogoutServlet";
 
     private static final String REGISTER_PAGE = "registerPage.html";
@@ -48,6 +48,7 @@ public class MainController extends HttpServlet {
     private static final String DELETE_ORDER_SERVLET = "DeleteOrderServlet";
     private static final String FEEDBACK_PAGE = "FeedBackPageServlet";
     private static final String FEEDBACK_SERVLET = "FeedBackServlet";
+    private static final String CHECK_DISCOUNTCODE_SERVLET = "CheckDiscountCodeServlet";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -96,6 +97,10 @@ public class MainController extends HttpServlet {
                 url = FEEDBACK_PAGE;
             } else if (action.equals("FeedBackServlet")) {
                 url = FEEDBACK_SERVLET;
+            } else if (action.equals("checkDiscountCode")) {
+                url = CHECK_DISCOUNTCODE_SERVLET;
+            } else if (action.equals("homeForAdmin")) {
+                url = HOME_FOR_ADMIN_SERVLET;
             }
 
         } catch (Exception e) {

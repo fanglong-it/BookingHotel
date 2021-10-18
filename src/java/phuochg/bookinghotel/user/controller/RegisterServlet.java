@@ -17,6 +17,7 @@ import phuochg.bookinghotel.users.UserDAO;
 import phuochg.bookinghotel.users.UserDTO;
 import phuochg.bookinghotel.users.UserError;
 import phuochg.bookinghotel.validation.CheckValidation;
+import phuochg.bookinghotel.validation.encrypted;
 
 /**
  *
@@ -42,7 +43,7 @@ public class RegisterServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = REGISTER_PAGE;
         UserError userError = new UserError("", "", "", "", "", "");
-        
+
         try {
             String userId = request.getParameter("userId");
             String password = request.getParameter("Password");
@@ -52,46 +53,45 @@ public class RegisterServlet extends HttpServlet {
             String phoneNumber = request.getParameter("phoneNumber");
             boolean check = true;
             String msg = "";
-            
-            if(!CheckValidation.isValidEmailAddress(userId)){
+
+            if (!CheckValidation.isValidEmailAddress(userId)) {
                 check = false;
                 userError.setUserIDError("Email must match !xxxx@xxxx.xxx!");
             }
-            if(!CheckValidation.isValidPassword(password)){
+            if (!CheckValidation.isValidPassword(password)) {
                 check = false;
                 userError.setPasswordError("Password must contain one spectify character!");
             }
-            if(!rePassword.equals(password)){
+            if (!rePassword.equals(password)) {
                 check = false;
                 userError.setConfirmPasswordError("RePassword must match the password");
             }
-            if(fullname.length() < 1 && fullname.length() > 20){
+            if (fullname.length() < 1 && fullname.length() > 20) {
                 check = false;
                 userError.setNameError("Name valid in [1,20]!");
             }
-            if(address.length() < 5){
+            if (address.length() < 5) {
                 check = false;
                 userError.setAddress("Address can't less than 5 character!");
             }
-            if(!CheckValidation.isValidPhoneNumber(phoneNumber)){
+            if (!CheckValidation.isValidPhoneNumber(phoneNumber)) {
                 check = false;
                 userError.setPhoneNumberError("Phone Number is Invalid");
             }
-            
-            if(check){
+
+            if (check) {
                 AccountDAO accountDAO = new AccountDAO();
                 UserDAO userDAO = new UserDAO();
-                AccountDTO acc = new AccountDTO(userId, rePassword, 0, "Active");
+                AccountDTO acc = new AccountDTO(userId, encrypted.encryptedPassword(rePassword), 0, "Active");
                 UserDTO user = new UserDTO(userId, fullname, address, phoneNumber);
-                
-                if(accountDAO.insertAccount(acc) && userDAO.insertUser(user)){
+
+                if (accountDAO.insertAccount(acc) && userDAO.insertUser(user)) {
                     url = LOGIN_PAGE;
                     msg = "Create Success! Login here!";
                     request.setAttribute("CREATE_MSG", msg);
                 }
-                
-                
-            }else{
+
+            } else {
                 request.setAttribute("USER_ERROR", userError);
             }
 

@@ -133,4 +133,17 @@ public class OrderUtils {
         return sb.toString();
     }
 
+    public float calculatorDiscount(float total, int value) {
+        return (total * value) / 100;
+    }
+
+    public boolean checkExistInDB(List<RoomDTO> listRoom, int roomNo) {
+        for (int i = 0; i < listRoom.size(); i++) {
+            if (listRoom.get(i).getRoomNo() == roomNo) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -6,6 +6,7 @@
 package phuochg.bookinghotel.user.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,12 +20,12 @@ import phuochg.bookinghotel.validation.OrderUtils;
 
 /**
  *
- * @author Fanglong-it
+ * @author Fangl
  */
-@WebServlet(name = "SearchRoomServlet", urlPatterns = {"/SearchRoomServlet"})
-public class SearchRoomServlet extends HttpServlet {
+@WebServlet(name = "LoadRoomAdminServlet", urlPatterns = {"/LoadRoomAdminServlet"})
+public class LoadRoomAdminServlet extends HttpServlet {
 
-    private static final String HOME_PAGE_USER = "homeForUser.jsp";
+    private static final String HOME_PAGE_ADMIN = "homeForAdmin.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,45 +39,18 @@ public class SearchRoomServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = HOME_PAGE_USER;
+        String url = HOME_PAGE_ADMIN;
         try {
-            String searchValue = request.getParameter("searchValue");
-            String checkIn = request.getParameter("checkIn");
-            String checkOut = request.getParameter("checkOut");
-            String option = request.getParameter("option");
-            RoomDAO roomDAO = new RoomDAO();
-            List<RoomDTO> listRoomDTOs = null;
-            String msg = "";
+            RoomDAO room = new RoomDAO();
 
-            if (searchValue.isEmpty() && option.equals("all")) {
-                listRoomDTOs = roomDAO.searchByNameRoom(searchValue);
-            } else if (searchValue.isEmpty() && !option.equals("all") && checkIn.isEmpty()) {
-                listRoomDTOs = roomDAO.searchByTypeRoom(option);
-            } else if (!searchValue.isEmpty() && !option.equals("all") && checkIn.isEmpty()) {
-                listRoomDTOs = roomDAO.searchByNameRoom(searchValue);
-            } else {
-                listRoomDTOs = roomDAO.searchListRoom(searchValue, option, checkIn, checkOut);
-            }
-
-            if (listRoomDTOs.size() == 0) {
-                msg = "Nothing To search";
-            } else {
-                msg = "Search Success!";
-                HttpSession session = request.getSession();
-                List<RoomDTO> listCart = (List<RoomDTO>) session.getAttribute("LIST_CART");
-                if (listCart != null) {
-                    OrderUtils order = new OrderUtils();
-                    if (order.checkExistIncart(listCart, listRoomDTOs)) {
-                        order.removeListRoom(listCart, listRoomDTOs);
-                    }
-                }
-                request.setAttribute("LIST_ROOM", listRoomDTOs);
-            }
-
-            request.setAttribute("SEARCH_MSG", msg);
+            List<RoomDTO> listRoom = room.getListRoom();
+            // get request of Cart - Compare with listROom (Check cart is Empty || not)
+            // modify Search
+            // booking
+            request.setAttribute("LIST_ROOM", listRoom);
 
         } catch (Exception e) {
-            log("Error at SearchHotelServlet:" + e.toString());
+            log("Error at LoadRoomServlet:" + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
